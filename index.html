@@ -187,6 +187,12 @@
     background: var(--card); border: 1px solid var(--line);
     display: flex; flex-direction: column;
   }
+  .care-photo {
+    display: block; width: calc(100% + 36px); max-width: none; margin: -18px -18px 16px;
+    aspect-ratio: 4 / 3; height: auto; object-fit: cover;
+    border-radius: 17px 17px 0 0; background: var(--paper-2);
+  }
+  .care { overflow: hidden; }
   .care-tag { margin: 0; font-size: 12.5px; font-weight: 700; color: var(--leaf); }
   .care h3 { margin: 4px 0 4px; font-size: 18px; line-height: 1.35; font-weight: 700; }
   .care-desc { margin: 0 0 14px; font-size: 14px; color: var(--muted); }
@@ -477,6 +483,7 @@
 
     <div class="care-grid">
       <article class="care">
+        <img class="care-photo" src="assets/care-intake.jpg" width="570" height="1000" loading="lazy" style="object-position: 50% 62%" alt="물리치료사가 엎드린 회원의 허리 통증 부위를 손으로 직접 확인하는 모습">
         <p class="care-tag">01 · 초진 문진표</p>
         <h3>시작 전, 꼼꼼히 여쭤봐요</h3>
         <p class="care-desc">통증 위치, 생활 습관, 운동 목적까지 먼저 이해하고 시작해요.</p>
@@ -489,6 +496,7 @@
       </article>
 
       <article class="care">
+        <img class="care-photo" src="assets/care-assess.jpg" width="579" height="1000" loading="lazy" style="object-position: 50% 48%" alt="물리치료사가 누워 있는 회원의 고관절 움직임을 평가하는 모습">
         <p class="care-tag">02 · 움직임 평가</p>
         <h3>체형부터 정확하게 평가해요</h3>
         <p class="care-desc">기능적 움직임 검사로 회원님 몸에 꼭 맞는 운동을 설계해요.</p>
@@ -500,6 +508,7 @@
       </article>
 
       <article class="care">
+        <img class="care-photo" src="assets/care-log.jpg" width="723" height="1000" loading="lazy" style="object-position: 50% 58%" alt="회원이 TRX 운동을 하는 동안 물리치료사가 태블릿에 PT 일지를 기록하는 모습">
         <p class="care-tag">03 · PT 일지</p>
         <h3>매 수업을 빠짐없이 기록해요</h3>
         <p class="care-desc">운동 종목, 무게, 횟수부터 그날의 통증 반응까지 남겨요.</p>
@@ -556,6 +565,7 @@
       </article>
 
       <article class="care">
+        <img class="care-photo" src="assets/care-video.jpg" width="524" height="1000" loading="lazy" style="object-position: 50% 14%" alt="네이버 밴드 사진첩 화면. 하체 운동, 어깨 운동, 등 운동, 가슴 운동 앨범이 정리되어 있음">
         <p class="care-tag">06 · 운동 영상</p>
         <h3>PT가 끝나도 운동은 잊지 않게</h3>
         <p class="care-desc">수업에서 배운 동작을 네이버 밴드 영상으로 남겨, 혼자서도 정확한 자세를 기억할 수 있어요.</p>
