@@ -148,6 +148,45 @@
   .social a:active { transform: scale(.985); }
   .social .badge { width: 26px; height: 26px; border-radius: 8px; }
 
+  /* ── Reservation ────────────────────── */
+  .resv-card { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 20px; }
+  .resv-cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .resv-month { font-family: var(--font-display); font-weight: 700; font-size: 17px; }
+  .resv-nav { width: 34px; height: 34px; border-radius: 999px; border: 1px solid var(--line); background: var(--paper); font-size: 16px; color: var(--ink); }
+  .resv-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+  .resv-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .resv-day { aspect-ratio: 1; border-radius: 10px; border: 1px solid var(--line); background: var(--paper); font-size: 13px; color: var(--ink); display: flex; align-items: center; justify-content: center; }
+  .resv-day.blank { visibility: hidden; border: none; background: none; }
+  .resv-day.disabled { color: #BDB49C; border-color: transparent; }
+  .resv-day.selected { background: var(--ink); color: var(--paper); border-color: var(--ink); font-weight: 700; }
+  .resv-day.today:not(.selected) { box-shadow: inset 0 0 0 1.5px var(--gold); }
+  .resv-note { font-size: 12.5px; color: var(--muted); margin: 10px 2px 0; }
+  .resv-hours-label { font-size: 14px; font-weight: 700; margin: 18px 2px 8px; }
+  .resv-hours { display: flex; flex-wrap: wrap; gap: 8px; }
+  .resv-hour { padding: 8px 13px; border-radius: 999px; font-size: 13px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); }
+  .resv-hour.selected { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .resv-hour.taken { color: #BDB49C; text-decoration: line-through; border-color: transparent; }
+  .resv-form { margin-top: 22px; display: flex; flex-direction: column; gap: 14px; }
+  .resv-field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; }
+  .resv-field input, .resv-field textarea {
+    width: 100%; border: 1px solid var(--line); background: var(--paper); border-radius: 10px;
+    padding: 10px 12px; font-size: 15px; font-family: inherit; color: var(--ink);
+  }
+  .resv-field textarea { margin-top: 8px; resize: none; }
+  .resv-purposes { display: flex; flex-wrap: wrap; gap: 7px; }
+  .resv-purpose { padding: 7px 13px; border-radius: 999px; font-size: 12.5px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); }
+  .resv-purpose.selected { background: var(--leaf); border-color: var(--leaf); color: #fff; }
+  .resv-selected { font-size: 13.5px; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; color: var(--muted); }
+  .resv-error { font-size: 13.5px; font-weight: 600; color: var(--warn); }
+  .resv-submit {
+    min-height: 52px; border-radius: 14px; background: var(--ink); color: var(--paper);
+    font-size: 16px; font-weight: 700; border: none;
+  }
+  .resv-submit:disabled { opacity: .5; }
+  .resv-success { background: var(--ink); color: var(--paper); border-radius: 16px; padding: 24px; text-align: center; }
+  .resv-success-title { font-family: var(--font-display); font-weight: 700; font-size: 18px; }
+  .resv-success-body { margin-top: 8px; font-size: 13.5px; color: rgba(246,241,231,.8); line-height: 1.6; }
+
   /* ── Sections ───────────────────────── */
   section { margin-top: 44px; }
   .label { font-size: 13px; font-weight: 700; color: var(--leaf); margin: 0 0 4px 2px; }
@@ -472,7 +511,7 @@
 
   <div class="book">
     <p>첫 방문은 <strong>상담과 움직임 평가</strong>부터 시작해요. 운동을 처음 하셔도 괜찮아요.</p>
-    <a class="book-btn" href="https://shinnaagym.vercel.app" target="_blank" rel="noopener">
+    <a class="book-btn" href="#reserve">
       첫 방문 예약하기
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
     </a>
@@ -500,6 +539,60 @@
 </div>
 
 <div class="content">
+  <section aria-labelledby="reserve-title" id="reserve">
+    <p class="label">예약</p>
+    <h2 id="reserve-title">방문 예약하기</h2>
+
+    <div class="resv-card">
+      <div class="resv-cal-head">
+        <button type="button" class="resv-nav" id="resv-prev" aria-label="이전 달">‹</button>
+        <p class="resv-month" id="resv-month"></p>
+        <button type="button" class="resv-nav" id="resv-next" aria-label="다음 달">›</button>
+      </div>
+      <div class="resv-weekdays">
+        <span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
+      </div>
+      <div class="resv-days" id="resv-days"></div>
+      <p class="resv-note" id="resv-window-note"></p>
+
+      <div id="resv-hours-wrap" hidden>
+        <p class="resv-hours-label" id="resv-hours-label"></p>
+        <div class="resv-hours" id="resv-hours"></div>
+      </div>
+
+      <form id="resv-form" class="resv-form" novalidate>
+        <div class="resv-field">
+          <label for="resv-name">성함</label>
+          <input id="resv-name" type="text" maxlength="30" placeholder="홍길동" required>
+        </div>
+        <div class="resv-field">
+          <label for="resv-age">나이</label>
+          <input id="resv-age" type="number" min="1" max="120" placeholder="30" required>
+        </div>
+        <div class="resv-field">
+          <label for="resv-phone">연락처</label>
+          <input id="resv-phone" type="tel" placeholder="010-1234-5678" required>
+        </div>
+        <div class="resv-field">
+          <label>운동 목적 (중복 선택 가능)</label>
+          <div class="resv-purposes" id="resv-purposes"></div>
+          <textarea id="resv-note" maxlength="200" rows="2" placeholder="추가로 알려주고 싶은 내용을 한 줄 정도 적어주세요. (예: 허리 디스크 재활 중이에요)"></textarea>
+        </div>
+
+        <div class="resv-selected" id="resv-selected">왼쪽에서 날짜와 시간을 선택해주세요.</div>
+
+        <p class="resv-error" id="resv-error" role="alert" hidden></p>
+
+        <button type="submit" class="resv-submit" id="resv-submit">예약 신청하기</button>
+      </form>
+
+      <div class="resv-success" id="resv-success" hidden>
+        <p class="resv-success-title">예약 신청이 접수됐어요</p>
+        <p class="resv-success-body" id="resv-success-body"></p>
+      </div>
+    </div>
+  </section>
+
   <section aria-labelledby="who-title">
     <p class="label">이런 분들이 찾아오세요</p>
     <h2 id="who-title">아픈 곳이 있어도,<br>운동을 시작할 수 있어요</h2>
@@ -733,7 +826,7 @@
 </main>
 
 <nav class="dock" id="dock" aria-label="빠른 예약">
-  <a class="dock-book" href="https://shinnaagym.vercel.app" target="_blank" rel="noopener">첫 방문 예약하기</a>
+  <a class="dock-book" href="#reserve">첫 방문 예약하기</a>
   <a class="dock-call" href="tel:01024968088" aria-label="전화하기 010-2496-8088">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
   </a>
@@ -847,6 +940,245 @@
       } catch (e) { toast(v); }
     });
   });
+
+  // ── 예약 폼 — shinnaagym.vercel.app의 예약 API를 그대로 불러와 쓴다 ──
+  (function () {
+    var API_BASE = 'https://shinnaagym.vercel.app';
+    var BOOKING_START_DATE = '2026-09-28';
+    var BOOKING_WINDOW_DAYS = 90;
+    var BUSINESS_START_HOUR = 9;
+    var BUSINESS_END_HOUR = 22;
+    var SATURDAY_END_HOUR = 15;
+    var PURPOSE_OPTIONS = [
+      { value: 'rehab', label: '재활' },
+      { value: 'posture', label: '체형교정' },
+      { value: 'diet', label: '다이어트' },
+      { value: 'strength', label: '근력 증진' },
+      { value: 'growth', label: '키성장' },
+      { value: 'prenatal_postnatal', label: '산전산후' },
+      { value: 'other', label: '기타' },
+    ];
+
+    var form = document.getElementById('resv-form');
+    if (!form) return;
+
+    function pad(n) { return String(n).padStart(2, '0'); }
+    function dateKey(y, m, d) { return y + '-' + pad(m) + '-' + pad(d); }
+    function koreaNow() {
+      var now = new Date();
+      return new Date(now.getTime() + 9 * 60 * 60 * 1000);
+    }
+    function koreaTodayKey() {
+      var k = koreaNow();
+      return dateKey(k.getUTCFullYear(), k.getUTCMonth() + 1, k.getUTCDate());
+    }
+    function koreaCurrentHour() { return koreaNow().getUTCHours(); }
+    function addDaysToKey(key, days) {
+      var p = key.split('-').map(Number);
+      var dt = new Date(Date.UTC(p[0], p[1] - 1, p[2]));
+      dt.setUTCDate(dt.getUTCDate() + days);
+      return dateKey(dt.getUTCFullYear(), dt.getUTCMonth() + 1, dt.getUTCDate());
+    }
+    function weekdayOf(key) { return new Date(key + 'T00:00:00').getDay(); }
+    function businessHours(key, isHoliday) {
+      var weekday = weekdayOf(key);
+      if (weekday === 0) return [];
+      var end = (weekday === 6 || isHoliday) ? SATURDAY_END_HOUR : BUSINESS_END_HOUR;
+      var hours = [];
+      for (var h = BUSINESS_START_HOUR; h < end; h++) hours.push(h);
+      return hours;
+    }
+
+    var todayKey = koreaTodayKey();
+    var minKey = todayKey > BOOKING_START_DATE ? todayKey : BOOKING_START_DATE;
+    var maxKey = addDaysToKey(BOOKING_START_DATE, BOOKING_WINDOW_DAYS);
+
+    var viewYear = Number(minKey.split('-')[0]);
+    var viewMonth = Number(minKey.split('-')[1]);
+    var selectedDate = null;
+    var selectedHour = null;
+    var taken = {};
+    var holidays = {};
+    var purposes = [];
+
+    var el = {
+      month: document.getElementById('resv-month'),
+      days: document.getElementById('resv-days'),
+      prev: document.getElementById('resv-prev'),
+      next: document.getElementById('resv-next'),
+      windowNote: document.getElementById('resv-window-note'),
+      hoursWrap: document.getElementById('resv-hours-wrap'),
+      hoursLabel: document.getElementById('resv-hours-label'),
+      hours: document.getElementById('resv-hours'),
+      purposesWrap: document.getElementById('resv-purposes'),
+      selected: document.getElementById('resv-selected'),
+      error: document.getElementById('resv-error'),
+      submit: document.getElementById('resv-submit'),
+      success: document.getElementById('resv-success'),
+      successBody: document.getElementById('resv-success-body'),
+    };
+
+    var startLabel = minKey.split('-');
+    el.windowNote.textContent = Number(startLabel[1]) + '월 ' + Number(startLabel[2]) + '일부터 ' + BOOKING_WINDOW_DAYS + '일 이내로 예약하실 수 있어요.';
+
+    PURPOSE_OPTIONS.forEach(function (opt) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'resv-purpose';
+      b.textContent = opt.label;
+      b.addEventListener('click', function () {
+        var i = purposes.indexOf(opt.value);
+        if (i === -1) { purposes.push(opt.value); b.classList.add('selected'); }
+        else { purposes.splice(i, 1); b.classList.remove('selected'); }
+      });
+      el.purposesWrap.appendChild(b);
+    });
+
+    function refreshTaken() {
+      fetch(API_BASE + '/api/reservations', { cache: 'no-store' })
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          taken = {};
+          (data.taken || []).forEach(function (t) { taken[t.date + '-' + t.hour] = true; });
+          holidays = {};
+          (data.holidays || []).forEach(function (d) { holidays[d] = true; });
+          renderHours();
+        })
+        .catch(function () {
+          // 네트워크 오류 시엔 목록을 갱신하지 못해도 예약 시도 시 서버가 다시 막아준다.
+        });
+    }
+
+    function renderCalendar() {
+      el.month.textContent = viewYear + '년 ' + viewMonth + '월';
+      el.days.innerHTML = '';
+      var first = new Date(viewYear, viewMonth - 1, 1);
+      var startWeekday = first.getDay();
+      var daysInMonth = new Date(viewYear, viewMonth, 0).getDate();
+      for (var i = 0; i < startWeekday; i++) {
+        var blank = document.createElement('div');
+        blank.className = 'resv-day blank';
+        el.days.appendChild(blank);
+      }
+      for (var d = 1; d <= daysInMonth; d++) {
+        var key = dateKey(viewYear, viewMonth, d);
+        var selectable = weekdayOf(key) !== 0 && key >= minKey && key <= maxKey;
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = String(d);
+        btn.dataset.key = key;
+        btn.className = 'resv-day'
+          + (selectable ? '' : ' disabled')
+          + (key === todayKey ? ' today' : '')
+          + (key === selectedDate ? ' selected' : '');
+        if (!selectable) btn.disabled = true;
+        btn.addEventListener('click', function () {
+          selectedDate = this.dataset.key;
+          selectedHour = null;
+          hideError();
+          renderCalendar();
+          renderHours();
+        });
+        el.days.appendChild(btn);
+      }
+    }
+
+    function renderHours() {
+      if (!selectedDate) { el.hoursWrap.hidden = true; updateSelectedSummary(); return; }
+      el.hoursWrap.hidden = false;
+      el.hoursLabel.textContent = selectedDate + ' 시간 선택';
+      el.hours.innerHTML = '';
+      var hours = businessHours(selectedDate, !!holidays[selectedDate]);
+      hours.forEach(function (h) {
+        var isPast = selectedDate === todayKey && h <= koreaCurrentHour();
+        var isTaken = !!taken[selectedDate + '-' + h] || isPast;
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = h + ':00';
+        btn.className = 'resv-hour' + (isTaken ? ' taken' : '') + (selectedHour === h ? ' selected' : '');
+        if (isTaken) btn.disabled = true;
+        btn.addEventListener('click', function () {
+          selectedHour = h;
+          renderHours();
+        });
+        el.hours.appendChild(btn);
+      });
+      updateSelectedSummary();
+    }
+
+    function updateSelectedSummary() {
+      if (selectedDate && selectedHour != null) {
+        el.selected.textContent = selectedDate + ' ' + selectedHour + ':00 - ' + (selectedHour + 1) + ':00';
+      } else {
+        el.selected.textContent = '왼쪽에서 날짜와 시간을 선택해주세요.';
+      }
+    }
+
+    function hideError() { el.error.hidden = true; }
+    function showError(msg) { el.error.textContent = msg; el.error.hidden = false; }
+
+    el.prev.addEventListener('click', function () {
+      viewMonth--; if (viewMonth === 0) { viewMonth = 12; viewYear--; }
+      renderCalendar();
+    });
+    el.next.addEventListener('click', function () {
+      viewMonth++; if (viewMonth === 13) { viewMonth = 1; viewYear++; }
+      renderCalendar();
+    });
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      hideError();
+
+      var name = document.getElementById('resv-name').value.trim();
+      var age = Number(document.getElementById('resv-age').value);
+      var phone = document.getElementById('resv-phone').value.trim();
+      var note = document.getElementById('resv-note').value.trim();
+
+      if (!selectedDate || selectedHour == null) return showError('예약 날짜와 시간을 선택해주세요.');
+      if (!name) return showError('성함을 입력해주세요.');
+      if (!age || age < 1 || age > 120) return showError('나이를 올바르게 입력해주세요.');
+      if (!phone) return showError('연락처를 입력해주세요.');
+      if (purposes.length === 0) return showError('운동 목적을 하나 이상 선택해주세요.');
+
+      el.submit.disabled = true;
+      el.submit.textContent = '예약 처리 중...';
+
+      fetch(API_BASE + '/api/reservations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: name, age: age, phone: phone,
+          purposes: purposes, purposeNote: note,
+          date: selectedDate, hour: selectedHour,
+        }),
+      })
+        .then(function (r) {
+          return r.json().then(function (data) { return { ok: r.ok, data: data }; });
+        })
+        .then(function (res) {
+          el.submit.disabled = false;
+          el.submit.textContent = '예약 신청하기';
+          if (!res.ok) {
+            showError(res.data.error || '예약 중 오류가 발생했습니다.');
+            refreshTaken();
+            return;
+          }
+          el.successBody.textContent = res.data.date + ' ' + res.data.hour + ':00에 예약해드릴게요. 남겨주신 연락처로 확인 안내드릴게요.';
+          form.hidden = true;
+          el.success.hidden = false;
+        })
+        .catch(function () {
+          el.submit.disabled = false;
+          el.submit.textContent = '예약 신청하기';
+          showError('네트워크 오류로 예약에 실패했어요. 다시 시도해주세요.');
+        });
+    });
+
+    renderCalendar();
+    renderHours();
+    refreshTaken();
+  })();
 </script>
 </body>
 </html>
