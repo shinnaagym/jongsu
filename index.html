@@ -159,9 +159,14 @@
   /* Who it's for */
   .who { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
   .who li { display: flex; gap: 12px; padding: 14px 2px; border-bottom: 1px solid var(--line); }
-  .who svg { flex: none; margin-top: 3px; color: var(--leaf); }
+  .who .who-ic {
+    flex: none; width: 40px; height: 40px; margin: 0; border-radius: 12px;
+    display: grid; place-items: center; background: var(--leaf-soft);
+    font-size: 21px; line-height: 1; font-family: "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;
+  }
+  .who li { align-items: center; }
   .who strong { display: block; font-size: 16px; font-weight: 700; line-height: 1.45; }
-  .who span { display: block; font-size: 14px; color: var(--muted); margin-top: 2px; }
+  .who div span { display: block; font-size: 14px; color: var(--muted); margin-top: 2px; }
   .also { margin: 14px 2px 0; font-size: 14px; color: var(--muted); }
 
   /* First visit steps (a real sequence) */
@@ -500,23 +505,23 @@
     <h2 id="who-title">아픈 곳이 있어도,<br>운동을 시작할 수 있어요</h2>
     <ul class="who">
       <li>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+        <span class="who-ic" aria-hidden="true">🩼</span>
         <div><strong>수술 후 다시 일상으로 돌아가고 싶은 분</strong><span>무릎 · 어깨 · 허리 수술 후 복귀 재활</span></div>
       </li>
       <li>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+        <span class="who-ic" aria-hidden="true">🦴</span>
         <div><strong>목 · 어깨 · 무릎이 아파 운동이 겁나는 분</strong><span>거북목, 오십견, 연골 · 관절 통증 케어</span></div>
       </li>
       <li>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+        <span class="who-ic" aria-hidden="true">🧘</span>
         <div><strong>체형이 틀어져 자세가 신경 쓰이는 분</strong><span>체형 교정 운동</span></div>
       </li>
       <li>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+        <span class="who-ic" aria-hidden="true">🧠</span>
         <div><strong>뇌졸중 등으로 신경계 재활이 필요한 분</strong><span>신경계 재활 운동</span></div>
       </li>
       <li>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+        <span class="who-ic" aria-hidden="true">💪</span>
         <div><strong>근력을 처음부터 제대로 쌓고 싶은 분</strong><span>기초 근력 · 지치지 않는 다이어트</span></div>
       </li>
     </ul>
